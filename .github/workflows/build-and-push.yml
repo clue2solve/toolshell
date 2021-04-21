@@ -13,12 +13,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Generate build number
+        id: buildnumber
+        uses: einaregilsson/build-number@v3 
+        with:
+          token: ${{secrets.github_token}} 
+
       - uses: actions/checkout@v2
         name: Check out code
 
       - uses: mr-smithers-excellent/docker-build-push@v5
         with:
           image: toolshell
+          tags: latest , ${{ steps.buildnumber.outputs.build_number }}
           registry: ghcr.io
           githubOrg: clue2solve # optional
           username: honnunand
