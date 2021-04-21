@@ -1,0 +1,1 @@
+docker run --rm -dit --name toolshell  -p 8443:8443 -p 8080:80 honnuanand/toolshell
