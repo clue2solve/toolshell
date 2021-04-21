@@ -9,6 +9,9 @@ Much too often,  we are scrambling to find the tools we are so used when we are 
 
 This is an attempt at packaging the tools. As a first iteration,  we are providing a docker image which will hopefully be useful to start.
 
+#### Credits
+    Some of the inspiration to do this was from the amazing folks who developed [code-server]() and [linuxserver.io]() who created a docker image for the same. The base image for this comes from there as well. 
+
 ### Usage with docker  
 ```bash
 docker run --rm -dit --name toolshell  -p 8443:8443 -p 8080:80 ghcr.io/clue2solve/toolshell:latest
