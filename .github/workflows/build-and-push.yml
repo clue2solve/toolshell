@@ -21,5 +21,5 @@ jobs:
           image: toolshell
           registry: ghcr.io
           githubOrg: clue2solve # optional
-          username: ${{ github.GHCR_USERNAME }}
+          username: honnunand
           password: ${{ secrets.GHCR_TOKEN }} 
