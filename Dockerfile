@@ -1,5 +1,8 @@
 FROM linuxserver/code-server
-LABEL description="This is a Docker image built to include all the common cloud tools along with a vs-code on the browser using code-server"
+LABEL "org.opencontainers.image.description""="This is a Docker image built to include all the common cloud tools along with a vs-code on the browser using code-server"
+LABEL maintainer="Anand Rao"
+LABEL "org.opencontainers.image.title"="toolshell"
+
 # install nginx 
 ENV OS_LOCALE="en_US.UTF-8" \
 	DEBIAN_FRONTEND=noninteractive
