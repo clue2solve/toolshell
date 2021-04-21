@@ -1,11 +1,25 @@
-steps:
-  - uses: actions/checkout@v2
-    name: Check out code
+name: Docker Image CI
 
-  - uses: mr-smithers-excellent/docker-build-push@v5
-    with:
-      image: toolshell
-      registry: ghcr.io
-      githubOrg: clue2solve # optional
-      username: ${{ secrets.GHCR_USERNAME }}
-      password: ${{ secrets.GHCR_TOKEN }} 
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        name: Check out code
+
+      - uses: mr-smithers-excellent/docker-build-push@v5
+        with:
+          image: toolshell
+          registry: ghcr.io
+          githubOrg: clue2solve # optional
+          username: ${{ secrets.GHCR_USERNAME }}
+          password: ${{ secrets.GHCR_TOKEN }} 
