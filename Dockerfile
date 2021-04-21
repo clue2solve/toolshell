@@ -1,7 +1,16 @@
 FROM linuxserver/code-server
-LABEL "org.opencontainers.image.description" : "This is a Docker image built to include all the common cloud tools along with a vs-code on the browser using code-server"
-LABEL "maintainer" : "Anand Rao"
-LABEL "org.opencontainers.image.title" : "toolshell"
+LABEL "org.opencontainers.image.description"  "This is a Docker image built to include all the common cloud tools along with a vs-code on the browser using code-server"
+LABEL "maintainer"  "Anand Rao"
+LABEL "org.opencontainers.image.title"  "toolshell"
+LABEL "org.opencontainers.image.source" "https://github.com/linuxserver/docker-code-server"
+LABEL "org.opencontainers.image.revision" " "
+LABEL "org.opencontainers.image.licenses" "GPL-3.0-only"
+# LABEL "org.opencontainers.image.version": "v3.9.3-ls77"
+LABEL "org.opencontainers.image.vendor" "clue2solve.io"
+LABEL "org.opencontainers.image.documentation" ""
+# LABEL "build_version": "Linuxserver.io version:- v3.9.3-ls77 Build-date:- 2021-04-18T12:48:22+00:00"
+LABEL "org.opencontainers.image.authors" "clue2solve"
+LABEL "org.opencontainers.image.url" "https://github.com/orgs/clue2solve/packages/container/package/toolshell"
 
 # install nginx 
 ENV OS_LOCALE="en_US.UTF-8" \
