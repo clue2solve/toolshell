@@ -1,5 +1,5 @@
 FROM linuxserver/code-server
-
+LABEL description="This is a Docker image built to include all the common cloud tools along with a vs-code on the browser using code-server"
 # install nginx 
 ENV OS_LOCALE="en_US.UTF-8" \
 	DEBIAN_FRONTEND=noninteractive
