@@ -19,6 +19,9 @@ ENV OS_LOCALE="en_US.UTF-8" \
 	LANGUAGE=en_US:en \
 	LC_ALL=${OS_LOCALE}
 
+WORKDIR /home
+# ENV HOME="/home"
+
 RUN apt-get update && apt-get install -y locales && locale-gen ${OS_LOCALE} \
 	&& BUILD_DEPS='wget gnupg' \
 	&& apt-get install --no-install-recommends -y $BUILD_DEPS \
@@ -66,8 +69,21 @@ RUN apt-get update && apt-get install -y locales && locale-gen ${OS_LOCALE} \
   chmod 755 /usr/local/bin/kp \
 # COPY kp-linux-0.1.1 /usr/local/bin/kp
 #  && chmod 755 /usr/local/bin/kp \
- && curl -sSL "https://github.com/concourse/concourse/releases/download/v6.7.1/fly-6.7.1-linux-amd64.tgz" |sudo tar -C /usr/local/bin/ --no-same-owner -xzv fly
-
+ && curl -sSL "https://github.com/concourse/concourse/releases/download/v6.7.1/fly-6.7.1-linux-amd64.tgz" |sudo tar -C /usr/local/bin/ --no-same-owner -xzv fly \
+# Some auto completion plugins 
+# Default powerline10k theme, no plugins installed
+  && apt-get install -y zsh  \
+  && apt-get install bash-completion \
+  && apt-get install -y vim \
+  && apt-get install -y wget \
+#   && echo 'alias k=kubectl' >>~/.zshrc \
+#   && echo 'complete -F __start_kubectl k' >>~/.zshrc
+  && sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.1/zsh-in-docker.sh)" -t "steeef" -p "git" -p "kubectl" -p "zsh-autosuggestions" -p  "zsh-kubectl-prompt"
+# Uses "Spaceship" theme with some customization. Uses some bundled plugins and installs some more from github
+# RUN apt-get install -y zsh
+# RUN git clone https://github.com/robbyrussell/oh-my-zsh \
+#     <installation_path>/.oh-my-zsh
+# COPY conf/.zshrc <installation_path>/.zshrc
 
 #conftest
 COPY --from=instrumenta/conftest /conftest /usr/local/bin/conftest
@@ -79,10 +95,11 @@ COPY --from=stedolan/jq /usr/local/bin/jq /usr/local/bin/jq
 # Docker CLI
 COPY --from=docker /usr/local/bin/docker /usr/local/bin/docker
 
-# COPY ./docker-nginx/configs/nginx.conf /etc/nginx/nginx.conf
+
 WORKDIR /var/www
 CMD ["nginx", "-g", "daemon off;"]
 
+WORKDIR /home
 
 EXPOSE 8443
 EXPOSE 80

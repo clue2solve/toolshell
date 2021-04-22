@@ -29,6 +29,8 @@ docker run --rm -dit --name toolshell  -p 8443:8443 -p 8080:80 ghcr.io/clue2solv
 Once you are in the VS-code,   you can always open the integrated terminal and use all the commands / tools that are included there. 
 
 ### The Tools included 
+1. The Default shell is `zsh` installed with '`oh-my-zsh`. The prompt enabled is `steeef` and the plugins installed are `git kubectl zsh-autosuggestions zsh-kubectl-prompt`
+
 1. code-server 
     The image will have a running vs-code accessible via the browser on port 8443
 
