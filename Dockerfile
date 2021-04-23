@@ -137,7 +137,8 @@ RUN groupadd --gid $USER_GID $USERNAME \
     -p https://github.com/zsh-users/zsh-completions \
 	# Add abc into sudoers
 	&& chown -R abc:abc /config \
-	&& echo abc ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/abc 
+	&& echo abc ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/abc \
+	&& chsh -s /usr/bin/zsh abc
 
 
 # ENTRYPOINT [ "/bin/zsh" ]
