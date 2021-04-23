@@ -18,9 +18,9 @@ ENV OS_LOCALE="en_US.UTF-8" \
     ENV LANG=${OS_LOCALE} \
 	LANGUAGE=en_US:en \
 	LC_ALL=${OS_LOCALE}
-
-WORKDIR /home
-# ENV HOME="/home"
+# this folder is a carry over from the base image above. 
+WORKDIR /config
+ENV HOME="/config"
 
 RUN apt-get update && apt-get install -y locales && locale-gen ${OS_LOCALE} \
 	&& BUILD_DEPS='wget gnupg' \
@@ -75,10 +75,10 @@ RUN apt-get update && apt-get install -y locales && locale-gen ${OS_LOCALE} \
   && apt-get install -y zsh  \
   && apt-get install bash-completion \
   && apt-get install -y vim \
-  && apt-get install -y wget \
+  && apt-get install -y wget 
 #   && echo 'alias k=kubectl' >>~/.zshrc \
 #   && echo 'complete -F __start_kubectl k' >>~/.zshrc
-  && sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.1/zsh-in-docker.sh)" -t "steeef" -p "git" -p "kubectl" -p "zsh-autosuggestions" -p  "zsh-kubectl-prompt"
+#   && sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.1/zsh-in-docker.sh)" -t "steeef" -p "git" -p "kubectl" -p "zsh-autosuggestions" -p  "zsh-kubectl-prompt"
 # Uses "Spaceship" theme with some customization. Uses some bundled plugins and installs some more from github
 # RUN apt-get install -y zsh
 # RUN git clone https://github.com/robbyrussell/oh-my-zsh \
@@ -96,10 +96,48 @@ COPY --from=stedolan/jq /usr/local/bin/jq /usr/local/bin/jq
 COPY --from=docker /usr/local/bin/docker /usr/local/bin/docker
 
 
-WORKDIR /var/www
+WORKDIR /config
 CMD ["nginx", "-g", "daemon off;"]
 
-WORKDIR /home
+
 
 EXPOSE 8443
 EXPOSE 80
+
+
+ARG USERNAME=tools
+ARG USER_UID=1005
+ARG USER_GID=$USER_UID
+
+RUN groupadd --gid $USER_GID $USERNAME \
+    && useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME \
+    && apt-get update \
+    && apt-get install -y sudo wget \
+    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME \
+    #
+    # Clean up
+    && apt-get autoremove -y \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/* 
+	# && chgrp -R $USERNAME /home
+
+# WORKDIR /home
+# ENV HOME="/home"
+
+ RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.1/zsh-in-docker.sh)" -- \
+    -t https://github.com/denysdovhan/spaceship-prompt \
+    -a 'bindkey "\$terminfo[kcuu1]" history-substring-search-up' \
+    -a 'bindkey "\$terminfo[kcud1]" history-substring-search-down' \
+    -p kubectl \
+	-p https://github.com/superbrothers/zsh-kubectl-prompt \
+	-p git \
+    -p ssh-agent \
+    -p https://github.com/zsh-users/zsh-autosuggestions \
+    -p https://github.com/zsh-users/zsh-completions \
+	# Add abc into sudoers
+	&& chown -R abc:abc /config \
+	&& echo abc ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/abc 
+
+
+# ENTRYPOINT [ "/bin/zsh" ]
